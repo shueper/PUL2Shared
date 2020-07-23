@@ -13,6 +13,9 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  major: 1
+  minor: 1
+  NugetVersion: $(major).$(minor).$[counter(variables['minor'], 0)]
 
 steps:
 - task: NuGetToolInstaller@1
@@ -36,7 +39,8 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
-    versioningScheme: 'off'
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'NugetVersion'
 
 - task: NuGetCommand@2
   inputs:
